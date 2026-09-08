@@ -1,0 +1,23 @@
+# Arquivos efêmeros de build/scratch (ver CLAUDE.md — não devem ser recriados/versionados)
+part1.html
+app1.js
+app2.js
+build.ps1
+
+# Sistema operacional
+Thumbs.db
+Desktop.ini
+*:Zone.Identifier
+.DS_Store
+
+# Editores / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs e temporários
+*.log
+*.tmp
+*.bak
