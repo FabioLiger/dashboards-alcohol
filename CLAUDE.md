@@ -45,7 +45,10 @@ ambiente certo. Scripts auxiliares foram escritos em PowerShell por esse motivo.
    remova antes de salvar.
 2. **Arquivo único, sem dependência de CDN para funcionar.** Nada de d3, nada de bundler, nada
    de `fetch()` em runtime. A fonte do Google é o único recurso externo e tem fallback de stack.
-3. **Mínimo de cliques até o dado aparecer.** Importou → tudo renderiza. Não acrescente etapas
+3. **Nenhuma chave de API no código.** Elas vivem no `.env` da raiz (git-ignorado), lido em
+   runtime por `ENV.load()`. Não crie `config.js`. Sob `file://` o `.env` não é legível — o
+   chat pede a chave uma vez e guarda em `localStorage`; a previsão do tempo só não aparece.
+4. **Mínimo de cliques até o dado aparecer.** Importou → tudo renderiza. Não acrescente etapas
    de configuração entre o upload e o resultado.
 
 ## Arquitetura de `Dashboards/index.html`
@@ -59,7 +62,26 @@ O arquivo é montado em quatro blocos, na ordem, cada um com um banner de coment
 | `<script id="world-geometry">` | `WORLD_TOPO` — TopoJSON Natural Earth 110m, **só geometria** |
 | `<script>` | núcleo (parsing/geo/projeção/estatística) seguido da camada de estado/render |
 
-Os banners `/* ==== DADOS ==== */`, `CONTROLES`, `RENDER`, `BOOT` delimitam a segunda metade do JS.
+Os banners `/* ==== DADOS ==== */`, `CONTROLES`, `RENDER`, `CHAVES (.env)`, `PREVISÃO DO TEMPO`,
+`CHAT COM OS DADOS (Gemini)` e `BOOT` delimitam a segunda metade do JS.
+
+### Integrações externas (chat e clima)
+
+- **`ENV`** — parser de `.env` (`KEY=valor`, `#` comenta, aspas removidas). `ENV.load()` tenta
+  `../.env` e depois `.env`; `ENV.get(k)` cai para `localStorage` (`nitro-env-<KEY>`) quando o
+  fetch falha. Placeholders `cole-sua-chave…` são ignorados de propósito.
+- **`chatContext()`** — monta o prompt a partir de `filtered()`, nunca de `APP.ds.rows`. Envia
+  filtros ativos, `describe()` por métrica, médias por continente, correlações e a tabela da
+  seleção (acima de 180 países, só os 90 maiores + 90 menores; as estatísticas cobrem todos).
+  Toda pergunta ao Gemini deve continuar valendo para o recorte da tela.
+- **`geminiAsk()`** — REST `v1beta/…:generateContent`, sem SDK. Percorre `geminiModels()` em
+  ordem: 429/404/5xx/resposta vazia → próximo modelo; 401/403 aborta (chave ruim, trocar de
+  modelo não resolve). Devolve `{text, model}` e a UI mostra qual modelo respondeu.
+- **`renderAll()` chama `chatSyncCtx()`** — a linha de contexto do painel de chat acompanha os
+  filtros. Se você acrescentar um filtro novo, reflita-o em `filterSummary()` **e** em
+  `chatSyncCtx()`, senão o modelo responde sobre um recorte que não está na tela.
+- **Clima** — `initWeather()` só roda se houver `OPENWEATHER_API_KEY`; geolocalização negada,
+  chave ausente ou erro de rede resultam em pílula oculta, nunca em erro visível.
 
 ### Núcleo
 

@@ -21,3 +21,8 @@ Desktop.ini
 *.log
 *.tmp
 *.bak
+
+# Chaves de API (ver .env.example)
+.env
+
+.env - Copia*

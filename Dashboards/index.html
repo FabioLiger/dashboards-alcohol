@@ -425,6 +425,96 @@ table.data td .cn i{width:7px;height:7px;border-radius:50%;flex:none}
 .fab-support:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 16px 34px rgba(185,218,0,.32)}
 .fab-support svg{width:23px;height:23px}
 
+/* ---------------- previsão do tempo (cabeçalho) ---------------- */
+.weather{
+  display:none;align-items:center;gap:8px;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--txt-dim);
+  font-size:11.5px;line-height:1.15;white-space:nowrap;
+}
+.weather.on{display:inline-flex}
+.weather svg{width:17px;height:17px;color:var(--accent);flex:0 0 auto}
+.weather b{color:var(--txt);font-size:13px;font-weight:600}
+.weather .wx-place{color:var(--txt-mute);font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+.weather .wx-col{display:flex;flex-direction:column;gap:1px}
+@media (max-width:980px){ .weather{display:none !important} }
+
+/* ---------------- FAB "Fale com seus DADOS" ---------------- */
+.fab-chat{
+  position:fixed;left:22px;bottom:22px;z-index:500;
+  display:inline-flex;align-items:center;gap:10px;
+  height:54px;padding:0 20px 0 16px;border-radius:999px;
+  border:1px solid var(--citron);background:var(--citron);color:#17210A;
+  font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.01em;cursor:pointer;
+  box-shadow:0 12px 28px rgba(0,0,0,.35);
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+}
+.fab-chat:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(185,218,0,.34)}
+.fab-chat svg{width:23px;height:23px;flex:0 0 auto}
+.fab-chat.hide{display:none}
+@media (max-width:560px){ .fab-chat span{display:none} .fab-chat{padding:0;width:54px;justify-content:center} }
+
+/* ---------------- painel de chat ---------------- */
+.chat-panel{
+  position:fixed;left:22px;bottom:22px;z-index:900;
+  width:min(420px,calc(100vw - 44px));height:min(620px,calc(100vh - 44px));
+  display:none;flex-direction:column;overflow:hidden;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--shadow);
+}
+.chat-panel.on{display:flex;animation:pop .18s var(--ease)}
+.chat-head{
+  display:flex;align-items:center;gap:11px;padding:14px 16px;
+  border-bottom:1px solid var(--line);background:var(--surface-2);flex:0 0 auto;
+}
+.chat-head .dot{width:9px;height:9px;border-radius:50%;background:var(--citron);flex:0 0 auto}
+.chat-head h4{margin:0;font-size:13.5px;font-weight:600;color:var(--txt)}
+.chat-head p{margin:2px 0 0;font-size:10px;color:var(--txt-mute);letter-spacing:.05em;text-transform:uppercase}
+.chat-head .grow{flex:1}
+.chat-head button{
+  border:0;background:transparent;color:var(--txt-mute);cursor:pointer;
+  width:28px;height:28px;border-radius:50%;display:grid;place-items:center;transition:.15s;
+}
+.chat-head button:hover{color:var(--accent);background:rgba(185,218,0,.10)}
+.chat-ctx{
+  padding:8px 16px;font-size:10.5px;color:var(--txt-mute);border-bottom:1px solid var(--line-soft);
+  background:var(--bg-2);flex:0 0 auto;line-height:1.5;
+}
+.chat-ctx b{color:var(--accent);font-weight:600}
+.chat-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:88%;padding:10px 13px;border-radius:var(--r-lg);font-size:12.5px;line-height:1.62;white-space:pre-wrap;word-break:break-word}
+.msg.me{align-self:flex-end;background:var(--citron);color:#17210A;border-bottom-right-radius:2px}
+.msg.ai{align-self:flex-start;background:var(--surface-2);border:1px solid var(--line-soft);color:var(--txt);border-bottom-left-radius:2px}
+.msg.sys{align-self:center;background:transparent;color:var(--txt-mute);font-size:10.5px;text-align:center;max-width:100%;padding:2px}
+.msg.err{align-self:flex-start;background:rgba(158,59,95,.16);border:1px solid rgba(158,59,95,.5);color:var(--txt)}
+.msg b{font-weight:600}
+.msg code{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;background:rgba(127,127,127,.18);padding:1px 4px;border-radius:3px}
+.msg .model-tag{display:block;margin-top:7px;font-size:9.5px;color:var(--txt-mute);letter-spacing:.05em;text-transform:uppercase}
+.chat-dots{display:inline-flex;gap:4px;align-items:center}
+.chat-dots i{width:5px;height:5px;border-radius:50%;background:var(--txt-mute);animation:blip 1s infinite}
+.chat-dots i:nth-child(2){animation-delay:.16s}
+.chat-dots i:nth-child(3){animation-delay:.32s}
+@keyframes blip{0%,60%,100%{opacity:.25}30%{opacity:1}}
+.chat-sug{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px;flex:0 0 auto}
+.chat-sug button{
+  border:1px solid var(--line);background:transparent;color:var(--txt-dim);
+  font-family:inherit;font-size:10.5px;padding:5px 10px;border-radius:999px;cursor:pointer;transition:.15s;
+}
+.chat-sug button:hover{border-color:var(--accent);color:var(--accent)}
+.chat-form{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line);background:var(--surface-2);flex:0 0 auto}
+.chat-form textarea{
+  flex:1;background:var(--surface);border:1px solid var(--line-soft);color:var(--txt);
+  border-radius:var(--r);padding:9px 12px;font-size:12.5px;font-family:inherit;
+  resize:none;min-height:40px;max-height:120px;line-height:1.45;
+}
+.chat-form textarea:focus{outline:0;border-color:var(--accent)}
+.chat-form button{
+  border:1px solid var(--citron);background:var(--citron);color:#17210A;cursor:pointer;
+  width:40px;height:40px;border-radius:var(--r);display:grid;place-items:center;flex:0 0 auto;
+  align-self:flex-end;transition:.15s;
+}
+.chat-form button:disabled{opacity:.45;cursor:not-allowed}
+.chat-form button svg{width:18px;height:18px}
+
 /* ---------------- support modal ---------------- */
 .modal-overlay{
   position:fixed;inset:0;z-index:800;background:rgba(0,10,20,.55);
@@ -506,6 +596,14 @@ table.data td .cn i{width:7px;height:7px;border-radius:50%;flex:none}
       </div>
 
       <div class="top-actions">
+        <span class="weather" id="weather" title="Previsão do tempo na sua localização">
+          <span id="wxIcon"></span>
+          <span class="wx-col">
+            <b id="wxTemp">—</b>
+            <span class="wx-place" id="wxPlace">—</span>
+          </span>
+          <span id="wxDesc"></span>
+        </span>
         <span class="pill" id="status"><i></i> <span>Aguardando planilha</span></span>
         <button class="btn icon" id="btnTheme" title="Alternar tema claro/escuro" aria-label="Alternar tema">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
@@ -769,6 +867,41 @@ table.data td .cn i{width:7px;height:7px;border-radius:50%;flex:none}
       </div>
     </form>
   </div>
+</div>
+
+<!-- ============ CHAT COM OS DADOS (Gemini) ============ -->
+<button class="fab-chat" id="btnChat" title="Conversar com os dados usando IA" aria-label="Fale com seus dados" aria-haspopup="dialog">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.4-.6L3 21l1.8-4.9A8.3 8.3 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/>
+    <path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/>
+  </svg>
+  <span>Fale com seus DADOS</span>
+</button>
+
+<div class="chat-panel" id="chatPanel" role="dialog" aria-modal="false" aria-labelledby="chatTitle">
+  <div class="chat-head">
+    <span class="dot"></span>
+    <div>
+      <h4 id="chatTitle">Fale com seus DADOS</h4>
+      <p id="chatModel">Gemini</p>
+    </div>
+    <span class="grow"></span>
+    <button id="chatClear" title="Limpar conversa" aria-label="Limpar conversa">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg>
+    </button>
+    <button id="chatClose" title="Fechar" aria-label="Fechar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <div class="chat-ctx" id="chatCtx">Importe uma planilha para começar.</div>
+  <div class="chat-log" id="chatLog"></div>
+  <div class="chat-sug" id="chatSug"></div>
+  <form class="chat-form" id="chatForm">
+    <textarea id="chatInput" rows="1" placeholder="Pergunte sobre a seleção atual…" autocomplete="off"></textarea>
+    <button type="submit" id="chatSend" title="Enviar" aria-label="Enviar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20 4l-8 16-2-6-6-2Z"/></svg>
+    </button>
+  </form>
 </div>
 
 <script id="world-geometry">
@@ -1463,6 +1596,7 @@ function renderAll(){
   renderRank(rows);
   renderContinents(rows);
   renderTable(rows);
+  chatSyncCtx();
 }
 
 /* ---------- KPIs -------------------------------------------------------- */
@@ -1987,6 +2121,377 @@ function exportCSV(){
 }
 
 /* ============================================================
+   CHAVES (.env)
+   ============================================================
+   As chaves vivem em um .env na raiz do projeto (git-ignorado). O painel tenta
+   lê-lo em runtime; sob file:// o fetch é bloqueado e caímos para a chave que o
+   usuário colar uma vez (guardada em localStorage). Nunca há chave no código.  */
+const ENV = {
+  vals: {},
+  ready: false,
+  get(k){
+    if (this.vals[k]) return this.vals[k];
+    try { return localStorage.getItem('nitro-env-' + k) || ''; } catch (e){ return ''; }
+  },
+  set(k, v){ this.vals[k] = v; try { localStorage.setItem('nitro-env-' + k, v); } catch (e){} },
+  parse(txt){
+    txt.split(/\r?\n/).forEach(line => {
+      const s = line.trim();
+      if (!s || s[0] === '#') return;
+      const i = s.indexOf('=');
+      if (i < 1) return;
+      const k = s.slice(0, i).trim().replace(/^export\s+/, '');
+      let v = s.slice(i + 1).trim().replace(/^(['"])(.*)\1$/, '$2');
+      if (v && !/^cole-sua-chave/i.test(v)) this.vals[k] = v;
+    });
+  },
+  async load(){
+    for (const p of ['../.env', '.env']){
+      try {
+        const r = await fetch(p, { cache: 'no-store' });
+        if (!r.ok) continue;
+        const t = await r.text();
+        if (/=/.test(t) && !/^\s*</.test(t)){ this.parse(t); break; }
+      } catch (e){ /* file:// ou 404 — segue para o fallback */ }
+    }
+    this.ready = true;
+  }
+};
+
+/* ============================================================
+   PREVISÃO DO TEMPO (OpenWeatherMap)
+   ============================================================ */
+const WX_ICON = {
+  sun:  'M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M18.4 5.6l1.4-1.4M4.2 19.8l1.4-1.4',
+  cloud:'M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 5.7 11.2 3.5 3.5 0 0 0 7 18Z',
+  rain: 'M8 19v2M12 19v3M16 19v2',
+  snow: 'M8 19h.01M12 20h.01M16 19h.01',
+  bolt: 'm12 13-2 4h3l-1.5 4'
+};
+function wxSvg(group){
+  const paths = {
+    clear:  '<circle cx="12" cy="12" r="4.2"/><path d="' + WX_ICON.sun + '"/>',
+    clouds: '<path d="' + WX_ICON.cloud + '"/>',
+    rain:   '<path d="' + WX_ICON.cloud + '"/><path d="' + WX_ICON.rain + '"/>',
+    snow:   '<path d="' + WX_ICON.cloud + '"/><path d="' + WX_ICON.snow + '"/>',
+    storm:  '<path d="' + WX_ICON.cloud + '"/><path d="' + WX_ICON.bolt + '"/>',
+    mist:   '<path d="M4 9h13M4 13h16M7 17h11"/>'
+  };
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" ' +
+         'stroke-linecap="round" stroke-linejoin="round">' + (paths[group] || paths.clouds) + '</svg>';
+}
+function wxGroup(id){
+  const n = +id || 0;
+  if (n >= 200 && n < 300) return 'storm';
+  if (n >= 300 && n < 600) return 'rain';
+  if (n >= 600 && n < 700) return 'snow';
+  if (n >= 700 && n < 800) return 'mist';
+  if (n === 800) return 'clear';
+  return 'clouds';
+}
+const WEATHER = { data: null };
+
+async function fetchWeather(lat, lon){
+  const kApi = ENV.get('OPENWEATHER_API_KEY');
+  if (!kApi) return;
+  const url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat.toFixed(3) +
+              '&lon=' + lon.toFixed(3) + '&units=metric&lang=pt_br&appid=' + encodeURIComponent(kApi);
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('OpenWeatherMap respondeu ' + r.status);
+  const j = await r.json();
+  const w = (j.weather && j.weather[0]) || {};
+  WEATHER.data = {
+    temp: Math.round(j.main && j.main.temp),
+    feels: Math.round(j.main && j.main.feels_like),
+    hum: j.main && j.main.humidity,
+    desc: w.description || '',
+    place: j.name || '',
+    group: wxGroup(w.id)
+  };
+  renderWeather();
+}
+function renderWeather(){
+  const d = WEATHER.data, box = $('#weather');
+  if (!d || !box) return;
+  $('#wxIcon').innerHTML = wxSvg(d.group);
+  $('#wxTemp').textContent = isFinite(d.temp) ? d.temp + '°C' : '—';
+  $('#wxPlace').textContent = d.place || 'sua região';
+  const desc = d.desc ? d.desc.charAt(0).toUpperCase() + d.desc.slice(1) : '';
+  $('#wxDesc').textContent = desc;
+  box.title = desc + (isFinite(d.feels) ? ' · sensação ' + d.feels + '°C' : '') +
+              (d.hum != null ? ' · umidade ' + d.hum + '%' : '');
+  box.classList.add('on');
+}
+function initWeather(){
+  if (!ENV.get('OPENWEATHER_API_KEY') || !navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(
+    p => fetchWeather(p.coords.latitude, p.coords.longitude).catch(() => {}),
+    () => {},   // permissão negada: o painel simplesmente não mostra o clima
+    { timeout: 8000, maximumAge: 15 * 60 * 1000 }
+  );
+}
+
+/* ============================================================
+   CHAT COM OS DADOS (Gemini)
+   ============================================================ */
+const GEMINI_DEFAULT_MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash', 'gemini-2.0-flash-lite'];
+const CHAT = { open: false, busy: false, hist: [], model: null };
+
+function geminiModels(){
+  const cfg = ENV.get('GEMINI_MODELS');
+  const list = cfg ? cfg.split(',').map(s => s.trim()).filter(Boolean) : [];
+  return list.length ? list : GEMINI_DEFAULT_MODELS;
+}
+
+/** resumo textual dos filtros ativos — o mesmo recorte que a tela mostra */
+function filterSummary(){
+  const f = APP.f, parts = [];
+  parts.push('Métrica em foco: ' + METRIC_DEF[APP.metric].full + ' (' + METRIC_DEF[APP.metric].unit + ').');
+  parts.push('Continentes: ' + (f.conts.size ? Array.from(f.conts).join(', ') : 'todos'));
+  if (f.countries.size){
+    const nomes = APP.ds.rows.filter(r => f.countries.has(r.canonK)).map(r => r.name);
+    parts.push('Países fixados: ' + nomes.join(', '));
+  } else parts.push('Países fixados: nenhum');
+  const all = clean(APP.ds.rows.map(r => r.values[APP.metric]));
+  const lo0 = all.length ? Math.min.apply(null, all) : 0, hi0 = all.length ? Math.max.apply(null, all) : 0;
+  const full = f.lo == null || (f.lo <= lo0 + 1e-9 && f.hi >= hi0 - 1e-9);
+  parts.push('Faixa de consumo: ' + (full ? 'completa' :
+    fmt(f.lo, 1) + ' a ' + fmt(f.hi, 1) + ' ' + METRIC_DEF[APP.metric].unit));
+  return parts.join('\n');
+}
+
+/** monta o contexto enviado ao modelo a partir de filtered() — nunca hard-coded */
+function chatContext(){
+  const rows = filtered(), ds = APP.ds, ms = ds.metrics;
+  const L = [];
+  L.push('ARQUIVO: ' + (ds.fileName || 'planilha importada'));
+  L.push('BASE COMPLETA: ' + ds.rows.length + ' países. SELEÇÃO ATUAL (após filtros): ' + rows.length + ' países.');
+  L.push('');
+  L.push('FILTROS ATIVOS NA TELA:');
+  L.push(filterSummary());
+  L.push('');
+  L.push('ESTATÍSTICAS DA SELEÇÃO (' + rows.length + ' países):');
+  ms.forEach(m => {
+    const s = describe(rows.map(r => r.values[m]));
+    L.push('- ' + METRIC_DEF[m].full + ' [' + METRIC_DEF[m].unit + ']: n=' + s.n +
+      ', média=' + fmt(s.mean, 1) + ', mediana=' + fmt(s.median, 1) +
+      ', desvio-padrão=' + fmt(s.sd, 1) + ', mín=' + fmt(s.min, 1) + ', máx=' + fmt(s.max, 1) +
+      ', Q1=' + fmt(s.q1, 1) + ', Q3=' + fmt(s.q3, 1) + ', soma=' + fmt(s.sum, 0));
+  });
+  L.push('');
+  const byCont = new Map();
+  rows.forEach(r => { if (!byCont.has(r.continent)) byCont.set(r.continent, []); byCont.get(r.continent).push(r); });
+  L.push('POR CONTINENTE (média da métrica em foco):');
+  Array.from(byCont.entries()).forEach(([c, rs]) => {
+    const s = describe(rs.map(r => r.values[APP.metric]));
+    L.push('- ' + c + ': ' + rs.length + ' países, média=' + fmt(s.mean, 1) + ', máx=' + fmt(s.max, 1));
+  });
+  L.push('');
+  if (ms.length > 1){
+    L.push('CORRELAÇÕES DE PEARSON NA SELEÇÃO:');
+    for (let i = 0; i < ms.length; i++) for (let j = i + 1; j < ms.length; j++){
+      const c = pearson(rows.map(x => x.values[ms[i]]), rows.map(x => x.values[ms[j]]));
+      L.push('- ' + METRIC_DEF[ms[i]].label + ' x ' + METRIC_DEF[ms[j]].label + ': r=' +
+        (c.r == null ? '—' : c.r.toFixed(3)) + ' (n=' + c.n + ')');
+    }
+    L.push('');
+  }
+  const head = ['pais', 'continente'].concat(ms.map(m => m + '(' + METRIC_DEF[m].unit + ')'));
+  const line = r => [r.name, r.continent].concat(ms.map(m => r.values[m] == null ? '' : r.values[m])).join(';');
+  const LIM = 180;
+  if (rows.length <= LIM){
+    L.push('TABELA COMPLETA DA SELEÇÃO (' + head.join(';') + '):');
+    rows.forEach(r => L.push(line(r)));
+  } else {
+    const ord = rows.slice().sort((a, b) => (b.values[APP.metric] || 0) - (a.values[APP.metric] || 0));
+    L.push('TABELA (seleção grande: ' + rows.length + ' países — enviados os 90 maiores e os 90 menores ' +
+           'pela métrica em foco; as estatísticas acima cobrem TODOS os ' + rows.length + '):');
+    L.push(head.join(';'));
+    ord.slice(0, 90).forEach(r => L.push(line(r)));
+    L.push('...');
+    ord.slice(-90).forEach(r => L.push(line(r)));
+  }
+  return L.join('\n');
+}
+
+const CHAT_SYSTEM =
+  'Você é o analista de dados do painel "Consumo Global de Bebidas Alcoólicas" da Deixa Comigo Bebidas, divisão Nitro.\n' +
+  'Responda SEMPRE em português do Brasil, de forma direta e objetiva, com números formatados no padrão brasileiro.\n' +
+  'REGRAS:\n' +
+  '1. Use EXCLUSIVAMENTE os dados do contexto abaixo. Nunca invente números nem use conhecimento externo sobre consumo de álcool.\n' +
+  '2. O contexto reflete os FILTROS que o usuário aplicou na tela. Toda resposta deve valer para essa seleção, e não para a base inteira. ' +
+  'Quando um filtro estiver ativo, deixe isso explícito (ex.: "entre os países da Europa selecionados...").\n' +
+  '3. Se a pergunta exigir um dado que não está no contexto (país fora da seleção, outra métrica, outro ano), diga isso e sugira qual filtro o usuário deve ajustar.\n' +
+  '4. Seja conciso: no máximo ~180 palavras, sem tabelas gigantes. Use listas curtas quando ajudar.\n' +
+  '5. Não use Markdown com ** ou #; escreva texto corrido e listas com hífen.\n';
+
+async function geminiAsk(question){
+  const kApi = ENV.get('GEMINI_API_KEY');
+  if (!kApi) throw new Error('NO_KEY');
+  const models = geminiModels();
+  const ctx = chatContext();
+  const contents = CHAT.hist.slice(-8).map(m => ({ role: m.role, parts: [{ text: m.text }] }));
+  contents.push({ role: 'user', parts: [{ text: question }] });
+
+  const body = {
+    systemInstruction: { parts: [{ text: CHAT_SYSTEM + '\n===== CONTEXTO (recorte atual do painel) =====\n' + ctx }] },
+    contents,
+    generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
+  };
+
+  let lastErr = null;
+  for (const model of models){
+    try {
+      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' +
+        encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(kApi), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!r.ok){
+        let detail = '';
+        try { const j = await r.json(); detail = (j.error && j.error.message) || ''; } catch (e){}
+        // 401/403 = chave inválida: trocar de modelo não resolve, aborta.
+        if (r.status === 401 || r.status === 403) throw new Error('BAD_KEY:' + (detail || r.status));
+        lastErr = new Error(model + ' → HTTP ' + r.status + (detail ? ' (' + detail + ')' : ''));
+        continue;   // 429 (limite), 404 (modelo indisponível), 5xx → próximo modelo
+      }
+      const j = await r.json();
+      const cand = j.candidates && j.candidates[0];
+      const text = cand && cand.content && cand.content.parts
+        ? cand.content.parts.map(p => p.text || '').join('').trim() : '';
+      if (!text){
+        lastErr = new Error(model + ' → resposta vazia' +
+          (cand && cand.finishReason ? ' (' + cand.finishReason + ')' : ''));
+        continue;
+      }
+      return { text, model };
+    } catch (e){
+      if (String(e.message).indexOf('BAD_KEY:') === 0) throw e;
+      lastErr = new Error(model + ' → ' + e.message);
+    }
+  }
+  throw lastErr || new Error('Nenhum modelo Gemini respondeu.');
+}
+
+/* ---------- UI do chat -------------------------------------------------- */
+function esc(s){ return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+function chatPush(kind, text, tag){
+  const log = $('#chatLog');
+  const d = document.createElement('div');
+  d.className = 'msg ' + kind;
+  d.innerHTML = esc(text) + (tag ? '<span class="model-tag">' + esc(tag) + '</span>' : '');
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+  return d;
+}
+function chatTyping(){
+  const log = $('#chatLog');
+  const d = document.createElement('div');
+  d.className = 'msg ai';
+  d.id = 'chatTyping';
+  d.innerHTML = '<span class="chat-dots"><i></i><i></i><i></i></span>';
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+}
+function chatTypingOff(){ const t = $('#chatTyping'); if (t) t.remove(); }
+
+/** linha de contexto no topo do painel — espelha os filtros ativos */
+function chatSyncCtx(){
+  const box = $('#chatCtx'); if (!box) return;
+  if (!APP.ds){ box.innerHTML = 'Importe uma planilha para começar.'; return; }
+  const rows = filtered(), f = APP.f;
+  const bits = ['<b>' + rows.length + '</b> de ' + APP.ds.rows.length + ' países'];
+  bits.push('métrica <b>' + METRIC_DEF[APP.metric].label + '</b>');
+  if (f.conts.size) bits.push('continentes: <b>' + Array.from(f.conts).join(', ') + '</b>');
+  if (f.countries.size) bits.push('<b>' + f.countries.size + '</b> país(es) fixado(s)');
+  box.innerHTML = 'Respondendo sobre a seleção atual — ' + bits.join(' · ') + '.';
+}
+
+function chatSuggestions(){
+  const box = $('#chatSug'); if (!box) return;
+  const m = APP.ds ? METRIC_DEF[APP.metric].label.toLowerCase() : 'consumo';
+  const qs = [
+    'Resuma a seleção atual',
+    'Quais são os 5 maiores em ' + m + '?',
+    'Como os continentes se comparam?',
+    'Há algum outlier nesta seleção?'
+  ];
+  box.innerHTML = '';
+  qs.forEach(q => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = q;
+    b.onclick = () => { $('#chatInput').value = q; chatSubmit(); };
+    box.appendChild(b);
+  });
+}
+
+async function chatSubmit(){
+  if (CHAT.busy) return;
+  const inp = $('#chatInput');
+  const q = inp.value.trim();
+  if (!q) return;
+  if (!APP.ds){ toast('Importe uma planilha antes de conversar com os dados.', true); return; }
+
+  if (!ENV.get('GEMINI_API_KEY')){
+    const k = prompt('Chave da API do Google Gemini\n\n' +
+      'O painel não conseguiu ler o .env (isso acontece ao abrir o arquivo direto, via file://).\n' +
+      'Cole a chave para usar agora — ela fica só neste navegador.\n' +
+      'Para evitar este passo, sirva o projeto por HTTP (ex.: python -m http.server 8080).');
+    if (!k) return;
+    ENV.set('GEMINI_API_KEY', k.trim());
+  }
+
+  inp.value = ''; inp.style.height = 'auto';
+  chatPush('me', q);
+  CHAT.hist.push({ role: 'user', text: q });
+  CHAT.busy = true; $('#chatSend').disabled = true;
+  chatTyping();
+
+  try {
+    const { text, model } = await geminiAsk(q);
+    chatTypingOff();
+    chatPush('ai', text, model);
+    CHAT.hist.push({ role: 'model', text });
+    CHAT.model = model;
+    $('#chatModel').textContent = model;
+  } catch (e){
+    chatTypingOff();
+    const msg = String(e.message || e);
+    if (msg.indexOf('BAD_KEY:') === 0){
+      ENV.set('GEMINI_API_KEY', '');
+      chatPush('err', 'A chave do Gemini foi recusada. Confira GEMINI_API_KEY no .env e tente de novo.');
+    } else if (msg === 'NO_KEY'){
+      chatPush('err', 'Nenhuma chave do Gemini configurada.');
+    } else {
+      chatPush('err', 'Não consegui obter resposta. Todos os modelos da lista falharam.\nÚltimo erro: ' + msg);
+    }
+  } finally {
+    CHAT.busy = false; $('#chatSend').disabled = false;
+    $('#chatInput').focus();
+  }
+}
+
+function chatReset(){
+  CHAT.hist = [];
+  $('#chatLog').innerHTML = '';
+  chatPush('sys', 'Converse com a seleção que está na tela. Ajuste os filtros e as respostas acompanham.');
+  chatSyncCtx();
+  chatSuggestions();
+}
+function chatToggle(open){
+  CHAT.open = open;
+  $('#chatPanel').classList.toggle('on', open);
+  $('#btnChat').classList.toggle('hide', open);
+  if (open){
+    if (!CHAT.hist.length && !$('#chatLog').children.length) chatReset();
+    chatSyncCtx(); chatSuggestions();
+    setTimeout(() => $('#chatInput').focus(), 20);
+  }
+}
+
+/* ============================================================
    BOOT
    ============================================================ */
 (function boot(){
@@ -2076,6 +2581,24 @@ function exportCSV(){
     toast('Mensagem recebida (teste) — integração com o suporte ainda não está ativa.');
     closeSupport();
   };
+
+  // chat "Fale com seus DADOS"
+  $('#btnChat').onclick   = () => chatToggle(true);
+  $('#chatClose').onclick = () => chatToggle(false);
+  $('#chatClear').onclick = chatReset;
+  $('#chatForm').onsubmit = e => { e.preventDefault(); chatSubmit(); };
+  const ci = $('#chatInput');
+  ci.addEventListener('input', () => {
+    ci.style.height = 'auto';
+    ci.style.height = Math.min(120, ci.scrollHeight) + 'px';
+  });
+  ci.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); chatSubmit(); }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && CHAT.open) chatToggle(false); });
+
+  // chaves (.env) → previsão do tempo
+  ENV.load().then(initWeather);
 
   // conveniência: se o painel for servido por HTTP ao lado da pasta Dados/,
   // carrega o arquivo automaticamente. Em file:// isso falha em silêncio.
