@@ -1201,7 +1201,7 @@ function buildDataset(text, fileName){
     const i = head.findIndex((_, j) => !isNumCol(j));
     if (i < 0) throw new Error('Não encontrei uma coluna de país no arquivo.');
     cols.country = i;
-    warnings.push('Coluna de país não identificada pelo cabeçalho — usei <b>' + head[i] + '</b>.');
+    warnings.push('Coluna de país não identificada pelo cabeçalho — usei <b>' + esc(head[i]) + '</b>.');
   }
   let found = METRIC_SEQ.filter(m => cols[m] != null);
   if (!found.length){
@@ -1210,7 +1210,7 @@ function buildDataset(text, fileName){
     nums.forEach((idx, k) => { cols[METRIC_SEQ[k]] = idx; });
     found = METRIC_SEQ.filter(m => cols[m] != null);
     warnings.push('Cabeçalhos não reconhecidos — associei as colunas numéricas na ordem: ' +
-      found.map((m, k) => '<b>' + head[cols[m]] + '</b>→' + METRIC_DEF[m].label).join(', ') + '.');
+      found.map((m, k) => '<b>' + esc(head[cols[m]]) + '</b>→' + METRIC_DEF[m].label).join(', ') + '.');
   }
 
   const rows = []; const seen = new Set(); const unmapped = [];
@@ -1230,7 +1230,7 @@ function buildDataset(text, fileName){
   }
   if (!rows.length) throw new Error('Nenhum país válido foi lido do arquivo.');
   if (unmapped.length) warnings.push('Sem correspondência na base geográfica (mantidos nas estatísticas, ausentes do mapa): <b>' +
-    unmapped.slice(0, 12).join(', ') + (unmapped.length > 12 ? ' +' + (unmapped.length - 12) : '') + '</b>.');
+    unmapped.slice(0, 12).map(esc).join(', ') + (unmapped.length > 12 ? ' +' + (unmapped.length - 12) : '') + '</b>.');
 
   return { rows, metrics: found, warnings, cols, head, fileName, unmapped };
 }
@@ -1437,7 +1437,7 @@ function loadText(text, fileName){
   renderAll();
   armReveal();
   requestAnimationFrame(() => $$('.reveal').forEach(n => n.classList.add('in')));
-  toast('<b>' + fileName + '</b> importado — ' + ds.rows.length + ' países, ' +
+  toast('<b>' + esc(fileName) + '</b> importado — ' + ds.rows.length + ' países, ' +
         ds.metrics.length + ' métricas, ' + (ds.rows.length - ds.unmapped.length) + ' no mapa.');
 }
 
@@ -1552,7 +1552,7 @@ function renderCountryTags(){
   names.forEach(r => {
     const t = document.createElement('span');
     t.className = 'tag';
-    t.innerHTML = '<span>' + r.name + '</span>';
+    t.innerHTML = '<span>' + esc(r.name) + '</span>';
     const x = document.createElement('button');
     x.textContent = '×'; x.title = 'remover';
     x.onclick = () => { APP.f.countries.delete(r.canonK); renderAll(); };
@@ -1571,8 +1571,8 @@ function openPicker(q){
     const b = document.createElement('button');
     const on = APP.f.countries.has(r.canonK);
     b.innerHTML = '<span class="tick">' + (on ? '✓' : '') + '</span>' +
-      '<span style="flex:1">' + r.name + '</span>' +
-      '<span style="color:var(--txt-mute);font-size:10.5px">' + r.continent + '</span>';
+      '<span style="flex:1">' + esc(r.name) + '</span>' +
+      '<span style="color:var(--txt-mute);font-size:10.5px">' + esc(r.continent) + '</span>';
     b.onclick = () => {
       on ? APP.f.countries.delete(r.canonK) : APP.f.countries.add(r.canonK);
       openPicker($('#qCountry').value); renderAll();
@@ -1768,9 +1768,9 @@ function clickCountry(ev){
 function rowByKey(k){ return APP.ds ? APP.ds.rows.find(r => r.canonK === k) : null; }
 
 function countryTip(r, fallbackName){
-  if (!r) return '<div class="t-n">' + (fallbackName || '—') + '</div>' +
+  if (!r) return '<div class="t-n">' + esc(fallbackName || '—') + '</div>' +
     '<div class="t-c">sem dado na planilha</div>';
-  let h = '<div class="t-n">' + r.name + '</div><div class="t-c">' + r.continent + '</div>';
+  let h = '<div class="t-n">' + esc(r.name) + '</div><div class="t-c">' + esc(r.continent) + '</div>';
   APP.ds.metrics.forEach(m => {
     const v = r.values[m];
     h += '<div class="t-r' + (m === APP.metric ? ' hi' : '') + '"><span>' + METRIC_DEF[m].label +
@@ -2080,8 +2080,8 @@ function renderTable(rows){
   const body = list.map((r, i) =>
     '<tr data-k="' + r.canonK + '"' + (APP.f.countries.has(r.canonK) ? ' class="on"' : '') + '>' +
     '<td><span class="rk">' + (i + 1) + '</span></td>' +
-    '<td><span class="cn"><i style="background:' + (CONT_COLOR[r.continent] || '#7A97AE') + '"></i>' + r.name + '</span></td>' +
-    '<td>' + r.continent + '</td>' +
+    '<td><span class="cn"><i style="background:' + (CONT_COLOR[r.continent] || '#7A97AE') + '"></i>' + esc(r.name) + '</span></td>' +
+    '<td>' + esc(r.continent) + '</td>' +
     ms.map(m => '<td class="num">' + fmtAuto(r.values[m]) + '</td>').join('') + '</tr>').join('');
 
   $('#dataTbl').innerHTML = '<thead><tr>' + th + '</tr></thead><tbody>' +
